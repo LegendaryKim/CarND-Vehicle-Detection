@@ -41,7 +41,7 @@ The goals / steps of this project are the following:
 
 ### Histogram of Oriented Gradients (HOG)
 
-#### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
+#### HOG features extraction from the training images.
 
 The code for this step to load images is contained in the 1st ~ 3rd code cells of the IPython notebook.
 
@@ -56,7 +56,7 @@ Here is an example using the `YCrCb` color space and HOG parameters of `orientat
 
 ![alt text][image2]
 
-#### 2. Explain how you settled on your final choice of HOG parameters.
+#### Final choice of HOG parameters.
 
 I tried various combinations of parameters of HOG with ```spatial_bin = 16``` and ```history_bin = 16```, and estimate estimate featuring, training and predicting time, and their accuracies with 2000 image samples. Linear SVM classifier is selected. 
 
@@ -85,14 +85,14 @@ I tried various combinations of parameters of HOG with ```spatial_bin = 16``` an
 I chose the last parameter set, ```colorspace = "YCrCb" ```, ```orient = 12```, ```pixel_per_cell=16```, ```cell_per_block=2```, ```channel="ALL"```becuase I considered not only the accuracy with the classifer's preictions but also the computational times. 
 
 
-#### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+#### Training a classifier with my selected HOG features.
 
 In the section titled, **HOG Sub-sampling Window Search**, the method I selected combines spatial features, color histogram features, and HOG feature extraction with a sliding window search. By the ```finds_cars``` function, I can reduce time by performing the feature extraction on entire image rather than featuring on each window. 
 
 
 ### Sliding Window Search
 
-#### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
+#### Implementation and scales
 
 To perform an effective slidng window search, I made several size of the windows according to the ```y``` direction of image. Every Windows are half-overlaped. 
 
@@ -102,7 +102,7 @@ To perform an effective slidng window search, I made several size of the windows
 ![alt text][image4-4]
 ![alt text][image4-5]
 
-#### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
+####  Result
 
 I searched on the input images using YCrCb all 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result. Here is the result of the sliding window search:
 ![alt text][image3]
@@ -113,11 +113,10 @@ I searched on the input images using YCrCb all 3-channel HOG features plus spati
 
 ### Video Implementation
 
-#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
 Here's a [link to my video result](./project_video_out.mp4)
 
 
-#### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
+#### Filtering false positives with combining overlapping bounding boxes
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
@@ -133,8 +132,6 @@ To realize smooth-detection, I utilized the class `vehicle_detection` to mainitn
 ---
 
 ### Discussion
-
-#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
 The first problem I faced was finding the best parameters to generate HOG features and train the linear SVM strongly. The accuracy of SVM classifer was important, but, I had to consider computational time because it consumed lots of time to do simulation. For example, if I increased the sliding window overlapping rate would improved the accuracy, but I couldn't beacaused of extremely increased time cost. At last, this kind of program would be applyed for real-time simulation, the processing cost should be optimized.
 
